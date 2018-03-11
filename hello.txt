@@ -8,6 +8,4 @@ dwsw
 fuck
 creat new branch
 测
-
-craet feature and switchto master
-
+create a new branch
