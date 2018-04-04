@@ -1,6 +1,18 @@
 --waf core load
 require 'config'
 
+--WAF return  --返回结果
+function waf_output()
+    if config_waf_output == "redirect" then
+        ngx.redirect(config_waf_redirect_url, 301) --301跳转到你的url，我这里用的是后者
+    else
+        ngx.header.content_type = "text/html"
+        ngx.status = ngx.HTTP_FORBIDDEN
+        ngx.say(config_output_html)   --html在config里自己定义
+        ngx.exit(ngx.status)
+    end
+end
+
 --Load WAF rule
 function get_rule(rule_file_name)
     local io = require 'io'
@@ -17,7 +29,7 @@ function get_rule(rule_file_name)
     return(RULE_TABLE)
 end
 
---LOad the client IP
+--Load the client IP
 function get_client_ip()
     CLIENT_IP = ngx.req.get_headers()["X_real_ip"] --获取客户IP的常见做法，先real_ip，再X_forward_for
     if CLIENT_IP == nil then
@@ -44,7 +56,7 @@ end
 
 
 --return logs
-function log_record(method,url,data,ruletag)
+function record_log(method,url,data,ruletag)
     local cjson = require("cjson")  --c语言习惯的json，跨平台
     local io = require 'io'
     local LOG_PATH = config_log_dir
@@ -73,15 +85,5 @@ function log_record(method,url,data,ruletag)
     file:close()
 end
 
---WAF return  --返回结果
-function waf_output()
-    if config_waf_output == "redirect" then
-        ngx.redirect(config_waf_redirect_url, 301) --301跳转到你的url，我这里用的是后者
-    else
-        ngx.header.content_type = "text/html"
-        ngx.status = ngx.HTTP_FORBIDDEN
-        ngx.say(config_output_html)   --html在config里自己定义
-        ngx.exit(ngx.status)
-    end
-end
+
 
