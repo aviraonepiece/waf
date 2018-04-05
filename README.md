@@ -1,4 +1,4 @@
-
+﻿
 # 这是一个基于lua和nginx的waf
 
 
@@ -31,6 +31,7 @@ nginx的配置文件开发起来很麻烦也不优雅，这里用lua进行扩充
 - config.lua  waf开关以及配置，注释英语很好懂，on为开，off为关
 - fuctions.lua waf的各项参数的检查函数
 - load.lua     waf的功能流程以及用户参数获取
+- nginx.conf   openresty自带nginx的配置文件，这里拿出来供配置不成功的朋友做个参考
 
 ## 不足之处：
 - 要合理把握好log文件目录权限，否则用户故意构造含webshell的请求，容易文件包含从logs提权
@@ -89,7 +90,7 @@ nginx: the configuration file /usr/local/openresty-1.9.3.2/nginx/conf/nginx.conf
 nginx: configuration file /usr/local/openresty-1.9.3.2/nginx/conf/nginx.conf test is successful
 
 [root@ ngx_openresty-1.9.3.2] pkill nginx //杀死进程
-[root@ ngx_openresty-1.9.3.2] /usr/local/openresty/nginx/sbin/nginx/重新启动
+[root@ ngx_openresty-1.9.3.2] /usr/local/openresty/nginx/sbin/nginx   //重新启动
 ```
 
 在github上克隆下代码
@@ -111,8 +112,8 @@ Unpacking objects: 100% (75/75), done.
 #WAF
 lua_shared_dict limit 50m; #防cc使用字典，大小50M
 lua_package_path /usr/local/openresty/nginx/conf/waf/?.lua; //waf规则
-init_by_lua_file /usr/local/openresty/nginx/conf/waf/init.lua; //初始化规则
-access_by_lua_file /usr/local/openresty/nginx/conf/waf/access.lua;
+init_by_lua_file /usr/local/openresty/nginx/conf/waf/fuctions.lua; //初始化规则
+access_by_lua_file /usr/local/openresty/nginx/conf/waf/process.lua;
 
 [root@ ~] /usr/local/openresty/nginx/sbin/nginx -t
 [root@ ~]/usr/local/openresty/nginx/sbin/nginx -s reload  //重新载入更新配置
