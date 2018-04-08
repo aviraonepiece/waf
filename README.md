@@ -2,7 +2,7 @@
 # 这是一个基于lua和nginx的waf
 
 
-nginx的配置文件开发起来很麻烦也不优雅，这里用lua进行扩充，本项目大量借鉴[loveshell](https://github.com/loveshell/ngx_lua_waf)部分函数重写优化， 并感谢[openresty](https://github.com/agentzh)的ngx_lua开源集成。本waf有更清晰、精简的实现方法和供理解的注释，并大量扩充了规则库。顺便学习lua语言，实践证明学起来很快，非常好上手。
+nginx的配置文件开发起来很麻烦也不优雅，这里用lua进行扩充，本项目借鉴[loveshell](https://github.com/loveshell/ngx_lua_waf)，部分函数重写优化， 并感谢[openresty](https://github.com/agentzh)的ngx_lua开源集成。本waf有更清晰、精简的实现方法和供理解的注释，并大量扩充了规则库。顺便学习lua语言，实践证明学起来很快，非常好上手。
 
 环境部署改为采用openresty1.9.3.2和兼容性强的ubuntu14.04。
 
